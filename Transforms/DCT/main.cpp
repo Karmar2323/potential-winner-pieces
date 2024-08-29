@@ -3,20 +3,20 @@
 #include <iomanip>
 
 /* Discrete cosine transform of an 8 bit 8x8 subimage.
-  Written to C++ from JPEG codec example 
-  (Wikipedia <https://en.wikipedia.org/wiki/JPEG>).
+  Written to C++ from JPEG codec example on
+  Wikipedia <https://en.wikipedia.org/wiki/JPEG>.
   The console app prints the hard-coded subimage array 
-  taken from the wikipedia article (29.8.2024). It then prints 
-  the shifted-value array, performs DCT on this and 
-  prints the result.
+  taken from the Wikipedia article (read on 29.8.2024).
+  It then prints the shifted-value array, performs DCT on this
+  and prints the result.
 */
 
 int main(){
-    const int BLOCKSIZE{8};
-    const int MIDPOINT{128};
+    const int BLOCKSIZE{8}; // subimage size BLOCKSIZE x BLOCKSIZE
+    const int MIDPOINT{128}; // middle value of subimage's pixel values for shifting
     float inv_sqrt2 {1 / sqrtf(2)};
-    const float PI {3.14159};
-    const int CWIDTH{8};
+    const float PI {3.14159f};
+    const int CWIDTH{8}; // column width for printing arrays
 
     int subimage [][BLOCKSIZE] {
         {52,55,61,66,70,61,64,73},
@@ -69,7 +69,6 @@ int main(){
     std::cout << std::endl;
 
     // 2. DCT
-    std::cout << "DCT coefficients: " << std::endl;
     // u: horizontal coordinate for result
     for (size_t u {}; u < BLOCKSIZE; u++) {
         // v: vertical coordinate for result
@@ -95,12 +94,17 @@ int main(){
             }
             // final DCT coefficient
             dct_matrix[u][v] = 0.25 * alphau * alphav * sumxy;
-            // print it
+        }
+    }
+
+    // print the result
+    std::cout << "DCT coefficients: " << std::endl;
+    for (size_t u {}; u < BLOCKSIZE; u++) {
+        for (size_t v {}; v < BLOCKSIZE; v++) {
             std::cout << std::setw(CWIDTH) << std::showpoint << std::fixed
                 << std::setprecision(2) << dct_matrix[u][v];
         }
         std::cout << std::endl;
-
     }
     return 0;
 }
